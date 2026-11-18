@@ -47,7 +47,8 @@ export function AllAppsScreen() {
   }, []);
 
   return (
-    <div className={styles.scroller} data-scroller>
+    // roda do mouse: a grade não tem barra de rolagem (overflow: hidden), então rola à mão
+    <div className={styles.scroller} data-scroller onWheel={(e) => (e.currentTarget.scrollTop += e.deltaY)}>
       {groups.map((group, gi) => (
         <section key={group.id} className={styles.groupSection} data-scroll-anchor>
           <SectionTitle Icon={GROUP_ICONS[group.id]}>{`${group.label} (${group.apps.length})`}</SectionTitle>

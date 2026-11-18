@@ -1,7 +1,6 @@
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { useState } from 'react';
 import type { FavoriteConfig } from '../config';
-import { scrollIntoViewIfNeeded } from '../navigation/spatial';
+import { useTvFocusable } from '../navigation/spatial';
 import { bannerUrl, iconUrl, isNative, launchApp, type InstalledApp } from '../services/native';
 import styles from './AppTile.module.css';
 
@@ -20,15 +19,16 @@ type Art = 'banner' | 'icon' | 'text';
  */
 export function AppTile({ app, focusKey, fallback }: Props) {
   const [art, setArt] = useState<Art>(() => (isNative() ? 'banner' : 'text'));
-  const { ref, focused } = useFocusable({
+  const { ref, focused, pointerProps } = useTvFocusable({
     focusKey,
-    onEnterPress: () => launchApp(app),
-    onFocus: () => scrollIntoViewIfNeeded(ref.current),
+    onSelect: () => launchApp(app),
+    scrollOnFocus: true,
   });
 
   return (
     <div
       ref={ref}
+      {...pointerProps}
       className={`${styles.tile} ${focused ? styles.focused : ''}`}
       style={art === 'banner' ? undefined : { background: fallback?.background }}
       aria-label={app.label}

@@ -1,24 +1,27 @@
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { AirVent, Power } from 'lucide-react';
 import { formatTemp } from '../lib/format';
+import { useTvFocusable } from '../navigation/spatial';
 import type { ClimateDevice } from '../services/climate';
 import styles from './ClimateCard.module.css';
 
 interface Props {
   device: ClimateDevice;
-  onToggle: (id: string) => void;
+  /** Sem `onToggle` o card é só visualização (não recebe foco). */
+  onToggle?: (id: string) => void;
 }
 
-/** Card de um ar-condicionado. OK no controle liga/desliga. */
+/** Card de um ar-condicionado. Com `onToggle`, OK no controle liga/desliga. */
 export function ClimateCard({ device, onToggle }: Props) {
-  const { ref, focused } = useFocusable({
+  const { ref, focused, pointerProps } = useTvFocusable({
     focusKey: `climate-${device.id}`,
-    onEnterPress: () => onToggle(device.id),
+    onSelect: () => onToggle?.(device.id),
+    focusable: onToggle != null,
   });
 
   return (
     <div
       ref={ref}
+      {...pointerProps}
       className={`${styles.card} ${focused ? styles.focused : ''}`}
       aria-label={`${device.name}, ${device.isOn ? 'ligado' : 'desligado'}`}
     >

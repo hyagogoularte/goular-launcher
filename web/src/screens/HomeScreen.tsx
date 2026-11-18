@@ -10,17 +10,20 @@ import styles from './Screens.module.css';
 export const FIRST_FAVORITE_KEY = 'fav-0';
 
 export function HomeScreen() {
-  const { devices, togglePower } = useClimate();
+  const { devices } = useClimate();
 
   return (
     <>
+      {/* Por enquanto só visualização: sem foco nem liga/desliga. Para reativar,
+          volte a envolver em <FocusGroup focusKey="climate-row"> e passe
+          onToggle={togglePower} de useClimate(). */}
       <section className={styles.section}>
         <SectionTitle Icon={House}>Casa</SectionTitle>
-        <FocusGroup focusKey="climate-row" className={styles.climateRow}>
+        <div className={styles.climateRow}>
           {devices.map((d) => (
-            <ClimateCard key={d.id} device={d} onToggle={togglePower} />
+            <ClimateCard key={d.id} device={d} />
           ))}
-        </FocusGroup>
+        </div>
       </section>
 
       <section className={styles.section}>

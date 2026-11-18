@@ -1,8 +1,8 @@
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { Settings } from 'lucide-react';
 import { config, type CityConfig } from '../config';
 import { formatDateLabel, formatTemp, formatTime, greetingFor } from '../lib/format';
 import { useNow } from '../lib/useNow';
+import { useTvFocusable } from '../navigation/spatial';
 import { openSystemSettings } from '../services/native';
 import { useWeather } from '../services/weather';
 import { WeatherIcon } from './WeatherIcon';
@@ -25,9 +25,9 @@ function WeatherBlock({ city }: { city: CityConfig }) {
 }
 
 function SettingsButton() {
-  const { ref, focused } = useFocusable({ focusKey: 'settings', onEnterPress: openSystemSettings });
+  const { ref, focused, pointerProps } = useTvFocusable({ focusKey: 'settings', onSelect: openSystemSettings });
   return (
-    <div ref={ref} className={`${styles.settings} ${focused ? styles.focused : ''}`} aria-label="Configurações">
+    <div ref={ref} {...pointerProps} className={`${styles.settings} ${focused ? styles.focused : ''}`} aria-label="Configurações">
       <Settings size="2.25rem" strokeWidth={2} />
     </div>
   );

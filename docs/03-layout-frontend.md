@@ -47,12 +47,19 @@ só `rem` ou tokens — nunca `px` fixo (exceto bordas de 1–2 px).
 
 ## 4. Foco e navegação por controle remoto
 
-- Lib: `@noriginmedia/norigin-spatial-navigation`. Cada item usa `useFocusable`
-  (recebe `focused` e `onEnterPress`); linhas são `FocusGroup` com
-  `saveLastFocusedChild` (subir e descer volta ao último item da linha).
+- Lib: `@noriginmedia/norigin-spatial-navigation`. Cada item usa `useTvFocusable`
+  (`navigation/spatial.tsx`), que embrulha o `useFocusable` da lib e devolve
+  `focused` + `pointerProps`; linhas são `FocusGroup` com `saveLastFocusedChild`
+  (subir e descer volta ao último item da linha).
+- **Mouse** (USB/Bluetooth no Fire TV, apps como Mouse Toggle, ou o navegador):
+  o foco é um só. Passar o mouse sobre um item move o foco para ele; clicar
+  equivale ao OK; a roda rola "Todos os aplicativos". O modo ponteiro
+  (`navigation/pointer.ts`) liga com movimento real do mouse e desliga na primeira
+  tecla — assim a grade rolando sob um cursor parado não rouba o foco do D-pad, e o
+  cursor some enquanto se usa o controle.
 - Foco inicial: primeiro favorito (`fav-0`). Voltar: na grade de apps volta ao Início;
   no Início, leva o foco aos favoritos. **Voltar nunca fecha o launcher.**
-- No navegador: setas = D-pad, Enter = OK, Esc/Backspace = voltar.
+- No navegador: setas = D-pad, Enter = OK, Esc/Backspace = voltar; mouse funciona como descrito acima.
 - Visual do foco:
   - abas, cards e engrenagem → borda ciano + brilho, `scale(1.03–1.08)`;
   - apps → borda branca + brilho magenta, `scale(1.08)`.

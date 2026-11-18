@@ -17,16 +17,21 @@ description: Regras para criar ou alterar a interface do Goular Launcher (React 
 - CSS Modules (`Componente.module.css`) ao lado do `.tsx`.
 - Sem `aspect-ratio` (WebView antigo): use o truque de `padding-bottom` (ver `AppTile.module.css`).
 
-## Foco (D-pad)
-- Todo elemento interativo usa `useFocusable` com `focusKey` estável e descritivo
-  (`fav-0`, `climate-<id>`, `tab-home`). Ação no `onEnterPress`, nunca `onClick`.
+## Foco (D-pad + mouse)
+- Todo elemento interativo usa `useTvFocusable` (`web/src/navigation/spatial.tsx`)
+  com `focusKey` estável e descritivo (`fav-0`, `climate-<id>`, `tab-home`), ação em
+  `onSelect` e `{...pointerProps}` espalhado no elemento. Assim OK do controle e
+  clique do mouse fazem a mesma coisa, e passar o mouse por cima move o foco.
+  Não use `useFocusable` direto nem `onClick` solto em itens.
 - Agrupe linhas/grades em `FocusGroup` (`web/src/navigation/spatial.tsx`).
 - Estado visual via classe `.focused` — nunca `:focus`/outline nativo.
 - Padrão de foco:
   - controles (abas, cards, botões): `::after` com borda `--c-accent` + brilho,
     `transform: scale(1.03–1.08)`;
   - apps/conteúdo: borda branca + `--c-tile-glow`, `scale(var(--scale-tile-focus))`.
-- Itens em áreas roláveis chamam `scrollIntoViewIfNeeded(ref.current)` no `onFocus`.
+- Itens em áreas roláveis passam `scrollOnFocus: true` (rola só quando o foco vem do D-pad).
+- Modo ponteiro (`navigation/pointer.ts`): liga com movimento real do mouse, desliga
+  na primeira tecla; o cursor só aparece nesse modo.
 - Botão voltar chega como evento `goular:back`; nunca deve "sair" do launcher.
 - Teste no navegador: setas, Enter, Esc. Pressione as teclas com ~300ms de intervalo
   (o throttle da navegação descarta repetições mais rápidas que 90ms).
@@ -45,4 +50,5 @@ description: Regras para criar ou alterar a interface do Goular Launcher (React 
 ## Conferência final
 1. `cd web && npx tsc --noEmit && npm test`
 2. Preview (`.claude/launch.json` → "web") em 1600×900: screenshot e comparação com a referência.
-3. Navegar por todos os elementos novos só com o teclado.
+3. Navegar por todos os elementos novos só com o teclado — e depois só com o mouse
+   (hover foca, clique seleciona).
