@@ -3,6 +3,8 @@
  * Segredos (token do Home Assistant) ficam em web/.env.local — ver .env.example.
  */
 
+import type { AppGroupId } from './services/appGroups';
+
 export interface CityConfig {
   name: string;
   latitude: number;
@@ -64,6 +66,12 @@ export const config = {
       fallback: { background: 'linear-gradient(160deg, #2a2d36, #15171d)', color: '#ffffff' },
     },
   ] satisfies FavoriteConfig[],
+
+  /**
+   * Corrige o grupo de um app em "Todos os aplicativos" (pacote → grupo).
+   * Grupos: streaming, video, music, media, games, system, other.
+   */
+  appGroupOverrides: {} as Record<string, AppGroupId>,
 
   climate: {
     homeAssistantUrl: (import.meta.env.VITE_HA_URL as string | undefined) ?? '',

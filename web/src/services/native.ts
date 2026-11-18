@@ -20,6 +20,8 @@ declare global {
 export interface InstalledApp {
   packageName: string;
   label: string;
+  /** Categoria declarada no Android 8+ (video, audio, game, image…), quando houver. */
+  category?: string | null;
 }
 
 /** Eventos que a casca nativa dispara em window como `goular:<nome>`. */
@@ -56,6 +58,10 @@ const MOCK_APPS: InstalledApp[] = [
   'Apple TV:com.apple.atve.amazon.appletv',
   'Pluto TV:tv.pluto.android',
   'Downloader:com.esaba.downloader',
+  'VLC:org.videolan.vlc',
+  'Amazon Music:com.amazon.bueller.music',
+  'Fotos:com.amazon.bueller.photos',
+  'Configurações:com.amazon.tv.settings.v2',
 ].map((s) => {
   const [label, packageName] = s.split(':');
   return { label, packageName };

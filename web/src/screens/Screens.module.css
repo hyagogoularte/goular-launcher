@@ -23,21 +23,30 @@
   gap: 1.5rem;
 }
 
-/* Todos os aplicativos: ocupa o resto da tela e rola por dentro */
-.fill {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
+/*
+ * Todos os aplicativos: ocupa o espaço de Casa + Favoritos e rola por dentro.
+ * Rolagem só programática (foco do D-pad), sem barra nem animação.
+ */
 .scroller {
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
-  /* respiro para o zoom/brilho do foco não ser cortado */
-  margin: -1rem calc(-1 * var(--page-x)) 0;
-  padding: 1rem var(--page-x) 3rem;
+  /* respiro para o zoom/brilho do foco não ser cortado nas bordas */
+  margin: 3.25rem calc(-1 * var(--page-x)) 0;
+  padding: 1.5rem var(--page-x) 0;
+  /* esmaece a borda de baixo para indicar que há mais grupos */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 4rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 4rem), transparent);
+}
+
+.groupSection {
+  /* scroll-margin: quando a seção é trazida para a vista, sobra espaço para o brilho */
+  padding-bottom: 3.5rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.groupSection:last-child {
+  padding-bottom: 6rem;
 }
 
 .appsGrid {

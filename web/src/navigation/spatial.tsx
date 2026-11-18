@@ -58,7 +58,15 @@ export function FocusGroup({
   );
 }
 
-/** Rola o item focado para a área visível sem animação (barato no Fire Stick). */
+/**
+ * Rola o item focado para a área visível sem animação (barato no Fire Stick).
+ * Se o item estiver dentro de um bloco marcado com data-scroll-anchor (ex.: uma
+ * seção com título), traz o bloco inteiro, para o título não ficar escondido.
+ */
 export function scrollIntoViewIfNeeded(el: HTMLElement | null) {
-  el?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  if (!el) return;
+  const anchor = el.closest<HTMLElement>('[data-scroll-anchor]');
+  const scroller = anchor?.closest<HTMLElement>('[data-scroller]');
+  const fits = anchor && scroller && anchor.offsetHeight <= scroller.clientHeight;
+  (fits ? anchor : el).scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
