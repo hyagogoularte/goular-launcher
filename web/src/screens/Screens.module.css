@@ -1,0 +1,45 @@
+.section {
+  margin-top: 4.75rem;
+}
+
+.section + .section {
+  margin-top: 5.75rem;
+}
+
+.climateRow {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.climateRow > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.favoritesRow,
+.appsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* Todos os aplicativos: ocupa o resto da tela e rola por dentro */
+.fill {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.scroller {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  /* respiro para o zoom/brilho do foco não ser cortado */
+  margin: -1rem calc(-1 * var(--page-x)) 0;
+  padding: 1rem var(--page-x) 3rem;
+}
+
+.appsGrid {
+  row-gap: 2.25rem;
+}

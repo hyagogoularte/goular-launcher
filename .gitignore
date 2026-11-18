@@ -1,0 +1,18 @@
+# deps / builds
+node_modules/
+web/dist/
+android/app/src/main/assets/www/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/.kotlin/
+*.apk
+*.iml
+
+# secrets
+web/.env.local
+web/.env.*.local
+
+.DS_Store

@@ -1,0 +1,48 @@
+.tabs {
+  display: flex;
+  gap: 2.25rem;
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 4.5rem;
+  padding: 0 2.75rem 0 2.5rem;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  transition: transform var(--dur-focus) var(--ease-focus);
+}
+
+/* aba atual: borda ciano sem brilho */
+.tab.active {
+  border-color: var(--c-accent);
+  background: rgba(46, 230, 242, 0.08);
+}
+
+/* brilho do foco num pseudo-elemento: só a opacidade anima */
+.tab::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 3px solid var(--c-accent);
+  box-shadow:
+    0 0 1.25rem var(--c-accent-glow),
+    inset 0 0 0.75rem rgba(46, 230, 242, 0.25);
+  opacity: 0;
+  transition: opacity var(--dur-focus) var(--ease-focus);
+}
+
+.tab.focused {
+  transform: scale(1.04);
+}
+
+.tab.focused::after {
+  opacity: 1;
+}

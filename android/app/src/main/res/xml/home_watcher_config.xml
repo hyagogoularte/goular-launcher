@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Só recebe eventos de troca de janela do launcher da Amazon e não lê conteúdo de tela. -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:canRetrieveWindowContent="false"
+    android:description="@string/home_watcher_description"
+    android:notificationTimeout="100"
+    android:packageNames="com.amazon.tv.launcher" />

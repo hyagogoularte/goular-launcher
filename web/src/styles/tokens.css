@@ -1,0 +1,50 @@
+/*
+ * Design tokens do Goular Launcher.
+ * Medidas extraídas de docs/reference/home-reference.webp e convertidas para uma
+ * tela de 1920x1080. 1rem = 16px a 1920 de largura (ver global.css), então
+ * px / 16 = rem. Nunca use px direto nos componentes: use estes tokens ou rem.
+ */
+:root {
+  /* Cores base */
+  --c-bg-0: #040b1f;
+  --c-bg-1: #08183a;
+  --c-bg-2: #1b1660;
+  --c-bg-3: #3c138a;
+
+  --c-text: #f4f7ff;
+  --c-text-muted: rgba(226, 232, 255, 0.74);
+  --c-text-dim: rgba(226, 232, 255, 0.5);
+
+  --c-accent: #2ee6f2; /* ciano: foco de abas, cards e sublinhado */
+  --c-accent-glow: rgba(46, 230, 242, 0.55);
+  --c-tile-glow: rgba(217, 70, 239, 0.7); /* magenta: foco dos apps */
+  --c-power-on: #4ade80;
+
+  --c-surface: rgba(255, 255, 255, 0.055);
+  --c-surface-focus: rgba(255, 255, 255, 0.1);
+  --c-border: rgba(255, 255, 255, 0.16);
+  --c-divider: rgba(255, 255, 255, 0.28);
+
+  /* Raios */
+  --radius-pill: 999px;
+  --radius-card: 1.5rem;
+  --radius-tile: 1.25rem;
+
+  /* Espaçamentos de página */
+  --page-x: 5rem;
+  --page-top: 2.75rem;
+
+  /* Tipografia */
+  --font: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --fs-display: 2.75rem; /* "Boa noite, patrão." */
+  --fs-clock: 4.25rem;
+  --fs-temp-xl: 3rem; /* temperaturas do topo e dos cards */
+  --fs-section: 2rem;
+  --fs-body: 1.625rem;
+  --fs-label: 1.5rem;
+
+  /* Movimento: só transform e opacity são animados (barato na GPU do Fire Stick) */
+  --dur-focus: 160ms;
+  --ease-focus: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --scale-tile-focus: 1.08;
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Goular Launcher</string>
+    <string name="home_watcher_label">Goular – tela inicial</string>
+    <string name="home_watcher_description">Abre o Goular Launcher sempre que a tela inicial da Amazon aparecer. Não lê o conteúdo das telas.</string>
+</resources>

@@ -1,0 +1,10 @@
+.title {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  margin: 0 0 1.5rem;
+  padding-left: 0.25rem;
+  font-size: var(--fs-section);
+  font-weight: 500;
+  color: var(--c-text);
+}

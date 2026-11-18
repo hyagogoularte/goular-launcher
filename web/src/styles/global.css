@@ -1,0 +1,45 @@
+@import './tokens.css';
+
+/*
+ * Escala única: o layout é desenhado em 1920x1080 e tudo é medido em rem.
+ * No Fire Stick o WebView costuma reportar 960x540 CSS px (densidade 2x);
+ * no navegador, qualquer tamanho. Fixando 1rem = 1/120 da largura (limitado
+ * pela altura para manter 16:9), o layout fica idêntico em ambos.
+ */
+html {
+  font-size: min(calc(100vw / 120), calc(100vh / 67.5));
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-bg-0);
+}
+
+body {
+  color: var(--c-text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  cursor: none;
+}
+
+/* Foco é visual (classe .focused), nunca o outline nativo do WebView. */
+:focus {
+  outline: none;
+}
+
+img {
+  display: block;
+}
