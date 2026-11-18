@@ -14,7 +14,8 @@ Android mínima em Kotlin. Navegação por controle remoto com
 Ver a UI no navegador (setas, Enter e Esc simulam o controle):
 
 ```bash
-cd web && npm install && npm run dev
+npm run setup   # só na primeira vez (instala as dependências de web/)
+npm run dev     # abre em http://localhost:5173
 ```
 
 Instalar no Fire Stick (depois de preparar o ambiente):
@@ -36,11 +37,15 @@ FIRE_TV_IP=192.168.0.42 scripts/deploy.sh
 
 ## Comandos
 
+Rode da raiz do projeto; os atalhos repassam para `web/` (ou rode direto dentro de `web/`).
+
 | Comando | O quê |
 |---|---|
-| `npm run dev` (em `web/`) | preview no navegador |
-| `npm test` (em `web/`) | testes unitários |
-| `npm run build` (em `web/`) | gera a UI em `android/app/src/main/assets/www` |
+| `npm run setup` | instala as dependências de `web/` |
+| `npm run dev` | preview no navegador |
+| `npm test` | testes unitários |
+| `npm run typecheck` | checagem de tipos |
+| `npm run build` | gera a UI em `android/app/src/main/assets/www` |
 | `scripts/deploy.sh` | build completo + instala no Fire Stick |
 | `scripts/dev-tv.sh` | TV carregando a UI do Vite (live reload) |
 | `scripts/enable-home-watcher.sh` | Goular assume o botão Home |
