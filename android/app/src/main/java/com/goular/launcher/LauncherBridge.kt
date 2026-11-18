@@ -3,6 +3,8 @@ package com.goular.launcher
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.webkit.JavascriptInterface
@@ -15,7 +17,7 @@ import org.json.JSONObject
  */
 class LauncherBridge(private val activity: Activity) {
 
-    /** JSON: [{ packageName, label, isTvApp }] — apps abríveis, sem o próprio launcher. */
+    /** JSON: [{ packageName, label, isTvApp, category }] — apps abríveis, sem o próprio launcher. */
     @JavascriptInterface
     fun getInstalledApps(): String {
         val pm = activity.packageManager
@@ -29,9 +31,26 @@ class LauncherBridge(private val activity: Activity) {
                     .put("packageName", pkg)
                     .put("label", info.loadLabel(pm).toString())
                     .put("isTvApp", category == Intent.CATEGORY_LEANBACK_LAUNCHER)
+                    .put("category", appCategory(info.activityInfo.applicationInfo) ?: JSONObject.NULL)
             }
         }
         return JSONArray(apps.values).toString()
+    }
+
+    /** Categoria declarada pelo app (Android 8+), usada para agrupar em "Todos os aplicativos". */
+    private fun appCategory(info: ApplicationInfo): String? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return null
+        return when (info.category) {
+            ApplicationInfo.CATEGORY_VIDEO -> "video"
+            ApplicationInfo.CATEGORY_AUDIO -> "audio"
+            ApplicationInfo.CATEGORY_GAME -> "game"
+            ApplicationInfo.CATEGORY_IMAGE -> "image"
+            ApplicationInfo.CATEGORY_PRODUCTIVITY -> "productivity"
+            ApplicationInfo.CATEGORY_NEWS -> "news"
+            ApplicationInfo.CATEGORY_SOCIAL -> "social"
+            ApplicationInfo.CATEGORY_MAPS -> "maps"
+            else -> null
+        }
     }
 
     /** Abre o app (preferindo a entrada de TV). Retorna false se não estiver instalado. */

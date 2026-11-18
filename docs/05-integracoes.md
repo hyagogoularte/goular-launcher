@@ -62,7 +62,7 @@ Implemente `ClimateProvider` (`web/src/services/climate/types.ts`) e escolha-o e
 
 | Método | Retorno |
 |---|---|
-| `getInstalledApps()` | JSON `[{ packageName, label, isTvApp }]` |
+| `getInstalledApps()` | JSON `[{ packageName, label, isTvApp, category }]` (`category`: video, audio, game, image… no Android 8+, senão `null`) |
 | `launchApp(pkg)` | `true` se abriu; `false` se não está instalado |
 | `openSystemSettings()` | abre as configurações do Fire TV |
 | `getAppVersion()` | versão do APK |
@@ -71,3 +71,17 @@ Imagens: `http://appassets.androidplatform.net/appicons/banner/<pkg>` e `/icon/<
 
 Eventos disparados em `window`: `goular:back`, `goular:home`, `goular:resume`,
 `goular:packages-changed`.
+
+## Grupos em "Todos os aplicativos"
+
+Ao abrir a aba, os blocos Casa e Favoritos dão lugar a uma seção por grupo
+(`web/src/services/appGroups.ts`). Cada app é classificado nesta ordem:
+
+1. `config.appGroupOverrides` (`web/src/config.ts`) — sua correção manual, ex.:
+   `{ 'org.xbmc.kodi': 'streaming' }`;
+2. lista de pacotes conhecidos;
+3. categoria declarada pelo app no Android 8+ (vem da ponte nativa);
+4. palavras-chave no pacote/nome;
+5. "Outros".
+
+Grupos sem apps não aparecem. Voltar retorna ao Início.

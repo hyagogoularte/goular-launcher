@@ -36,7 +36,7 @@ vira simplesmente "como faço uma página 1920×1080 navegável por setas".
 - Navegação por D-pad com `@noriginmedia/norigin-spatial-navigation`.
 - Clima real (Open-Meteo, sem chave) com cache local.
 - Ar-condicionado simulado (mesmos valores da imagem).
-- Tela "Todos os aplicativos" com grade rolável.
+- Tela "Todos os aplicativos": substitui Casa e Favoritos por seções por grupo (Filmes e séries, Vídeos e ao vivo, Música, Mídia, Jogos, Utilitários, Outros), rolando pelo foco.
 - Testes unitários dos formatadores e do mapeamento de clima (`npm test`).
 
 ### Fase 2 — Casca Android ✅ implementado (precisa compilar no seu Mac)

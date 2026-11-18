@@ -52,6 +52,7 @@ const ANDROID_CATEGORY: Record<string, AppGroupId> = {
   game: 'games',
   image: 'media',
   productivity: 'system',
+  news: 'video',
 };
 
 /** Último recurso: palavras no pacote ou no nome. */
