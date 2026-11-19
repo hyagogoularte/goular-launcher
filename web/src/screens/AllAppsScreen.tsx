@@ -14,6 +14,7 @@ import { SectionTitle } from '../components/SectionTitle';
 import { config } from '../config';
 import { FocusGroup } from '../navigation/spatial';
 import { groupApps, type AppGroupId } from '../services/appGroups';
+import { artFor, HOME_PACKAGES, labelFor } from '../services/catalog';
 import { listInstalledApps, onNativeEvent, type InstalledApp } from '../services/native';
 import styles from './Screens.module.css';
 
@@ -30,15 +31,23 @@ const GROUP_ICONS: Record<AppGroupId, LucideIcon> = {
   other: LayoutGrid,
 };
 
-const fallbackFor = (pkg: string) => config.favorites.find((f) => f.packageName === pkg)?.fallback;
-
 /**
- * "Todos os aplicativos": ocupa o lugar dos blocos Casa e Favoritos com uma
- * seção por grupo (Filmes e séries, Música…), cada uma com sua grade de apps.
+ * "Todos os aplicativos": ocupa o lugar dos blocos do Início com uma seção por
+ * grupo (Filmes e séries, Música…). Os apps que já estão no Início não se repetem.
  */
 export function AllAppsScreen() {
   const [apps, setApps] = useState<InstalledApp[]>(() => listInstalledApps());
-  const groups = useMemo(() => groupApps(apps, config.appGroupOverrides), [apps]);
+  const groups = useMemo(
+    () =>
+      groupApps(
+        apps
+          .filter((a) => !HOME_PACKAGES.has(a.packageName))
+          .map((a) => ({ ...a, label: labelFor(a.packageName, a.label) })),
+        config.appGroupOverrides,
+        config.hiddenApps,
+      ),
+    [apps],
+  );
 
   useEffect(() => {
     const reload = () => setApps(listInstalledApps());
@@ -47,13 +56,19 @@ export function AllAppsScreen() {
   }, []);
 
   return (
-    <div className={styles.scroller} data-scroller>
+    // roda do mouse: a grade não tem barra de rolagem (overflow: hidden), então rola à mão
+    <div className={styles.scroller} data-scroller onWheel={(e) => (e.currentTarget.scrollTop += e.deltaY)}>
       {groups.map((group, gi) => (
         <section key={group.id} className={styles.groupSection} data-scroll-anchor>
           <SectionTitle Icon={GROUP_ICONS[group.id]}>{`${group.label} (${group.apps.length})`}</SectionTitle>
           <FocusGroup focusKey={`apps-${group.id}`} className={styles.appsGrid}>
             {group.apps.map((app, ai) => (
-              <AppTile key={app.packageName} focusKey={`app-${gi}-${ai}`} app={app} fallback={fallbackFor(app.packageName)} />
+              <AppTile
+                key={app.packageName}
+                focusKey={`app-${gi}-${ai}`}
+                app={app}
+                fallback={artFor(app.packageName)}
+              />
             ))}
           </FocusGroup>
         </section>

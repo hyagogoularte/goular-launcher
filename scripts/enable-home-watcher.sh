@@ -3,6 +3,7 @@
 # Preserva outros serviços de acessibilidade já ativos.
 source "$(dirname "$0")/_common.sh"
 connect_tv
+ensure_backup
 current="$(adb shell settings get secure enabled_accessibility_services | tr -d '\r')"
 if [[ -z "$current" || "$current" == "null" ]]; then
   next="$SERVICE"

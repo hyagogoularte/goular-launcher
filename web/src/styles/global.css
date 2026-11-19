@@ -35,6 +35,15 @@ body {
   cursor: none;
 }
 
+/* Modo ponteiro (navigation/pointer.ts): cursor só aparece enquanto o mouse está em uso. */
+.pointer body {
+  cursor: default;
+}
+
+.pointer [data-pointer-target] {
+  cursor: pointer;
+}
+
 /* Foco é visual (classe .focused), nunca o outline nativo do WebView. */
 :focus {
   outline: none;

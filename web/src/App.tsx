@@ -4,6 +4,7 @@ import { Background } from './components/Background';
 import { Header } from './components/Header';
 import { NavTabs, type TabId } from './components/NavTabs';
 import { Toast } from './components/Toast';
+import { config } from './config';
 import { onNativeEvent } from './services/native';
 import { AllAppsScreen, FIRST_APP_KEY } from './screens/AllAppsScreen';
 import { FIRST_FAVORITE_KEY, HomeScreen } from './screens/HomeScreen';
@@ -49,8 +50,8 @@ export function App() {
   }, [tab, goHome]);
 
   return (
-    <div className={styles.app}>
-      <Background />
+    <div className={styles.app} data-theme={config.background}>
+      <Background variant={config.background} />
       <main className={styles.content}>
         <Header />
         <div className={styles.tabs}>

@@ -14,13 +14,14 @@ A imagem foi medida em pixels e convertida para uma tela de 1920×1080
 | Relógio | ~68 px, bold, números tabulares | `--fs-clock: 4.25rem` |
 | Abas | 72 px de altura, pílula | `height: 4.5rem; --radius-pill` |
 | Cards de ar | 4 colunas, ~166 px de altura, gap 24 px | `flex: 1`, `gap: 1.5rem` |
-| Tiles de apps | 6 colunas, 16:9, gap 24 px | `grid-template-columns: repeat(6, 1fr)` |
-| Ciano do foco | `#2EE6F2` | `--c-accent` |
-| Brilho dos apps | magenta | `--c-tile-glow` |
+| Tiles de apps | 6 colunas, proporção 1,9:1 (banner 16:9 com `cover`), gap 24 px | `grid-template-columns: repeat(6, 1fr)` |
+| Cor do foco | smoke: prata `#D7DDEB` com halo cinza-azulado; classic: ciano `#2EE6F2` | `--c-accent`, `--c-accent-glow`, `--c-accent-haze` |
+| Brilho dos apps | smoke: fumaça; classic: magenta | `--c-tile-ring`, `--c-tile-glow`, `--c-tile-haze` |
 | Verde "ligado" | `#4ADE80` | `--c-power-on` |
 
-Hierarquia vertical: Header → 3,25rem → Abas → 4,75rem → "Casa" → cards → 5,75rem →
-"Favoritos" → tiles.
+Hierarquia vertical: Header → 3,25rem → Abas → 2,5rem → "Casa" → cards → 2,5rem →
+"Entretenimento" → tiles → 2,5rem → "Streaming" → tiles. Os blocos ficam juntos para
+os três caberem em 1080 sem rolar (último tile termina em ~1024px).
 
 ## 2. Uma escala só: `rem` atrelado à largura
 
@@ -37,25 +38,35 @@ só `rem` ou tokens — nunca `px` fixo (exceto bordas de 1–2 px).
 | Na imagem | Componente |
 |---|---|
 | "Boa noite, patrão." + sublinhado | `Header` (saudação muda com a hora) |
-| Clima Florianópolis / Paris | `Header › WeatherBlock` + `WeatherIcon` (SVG próprio) |
+| Clima de Florianópolis (cidades em `config.cities`) | `Header › WeatherBlock` + `WeatherIcon` (SVG próprio) |
 | 23:23 / Terça, 17 de Nov. | `Header` + `useNow` (atualiza na virada do minuto) |
 | Engrenagem | `Header › SettingsButton` → configurações do Fire TV |
 | Início / Todos os aplicativos | `NavTabs` |
 | Casa | `SectionTitle` + `ClimateCard` × 4 |
-| Favoritos | `SectionTitle` + `AppTile` × 6 |
-| Fundo com ondas | `Background` (gradientes + SVG estático) |
+| Entretenimento / Streaming | `SectionTitle` + `AppTile` (6 por fileira), de `config.homeRows` |
+| Fundo com ondas | `Background` (gradientes + SVG estático). `config.background`: `smoke` (padrão: quase preto, ondas em tom de fumaça) ou `classic` (azul → roxo da referência) |
 
 ## 4. Foco e navegação por controle remoto
 
-- Lib: `@noriginmedia/norigin-spatial-navigation`. Cada item usa `useFocusable`
-  (recebe `focused` e `onEnterPress`); linhas são `FocusGroup` com
-  `saveLastFocusedChild` (subir e descer volta ao último item da linha).
-- Foco inicial: primeiro favorito (`fav-0`). Voltar: na grade de apps volta ao Início;
-  no Início, leva o foco aos favoritos. **Voltar nunca fecha o launcher.**
-- No navegador: setas = D-pad, Enter = OK, Esc/Backspace = voltar.
+- Lib: `@noriginmedia/norigin-spatial-navigation`. Cada item usa `useTvFocusable`
+  (`navigation/spatial.tsx`), que embrulha o `useFocusable` da lib e devolve
+  `focused` + `pointerProps`; linhas são `FocusGroup` com `saveLastFocusedChild`
+  (subir e descer volta ao último item da linha).
+- **Mouse** (USB/Bluetooth no Fire TV, apps como Mouse Toggle, ou o navegador):
+  o foco é um só. Passar o mouse sobre um item move o foco para ele; clicar
+  equivale ao OK; a roda rola "Todos os aplicativos". O modo ponteiro
+  (`navigation/pointer.ts`) liga com movimento real do mouse e desliga na primeira
+  tecla — assim a grade rolando sob um cursor parado não rouba o foco do D-pad, e o
+  cursor some enquanto se usa o controle.
+- Foco inicial: primeiro app do Entretenimento (`fav-0-0`; os tiles do Início são
+  `fav-<bloco>-<posição>`). Voltar: na grade de apps volta ao Início; no Início, leva o
+  foco ao Entretenimento. **Voltar nunca fecha o launcher.**
+- No navegador: setas = D-pad, Enter = OK, Esc/Backspace = voltar; mouse funciona como descrito acima.
 - Visual do foco:
-  - abas, cards e engrenagem → borda ciano + brilho, `scale(1.03–1.08)`;
-  - apps → borda branca + brilho magenta, `scale(1.08)`.
+  - abas, cards e engrenagem → borda `--c-accent` + brilho, `scale(1.03–1.08)`;
+  - apps → borda `--c-tile-ring` + brilho `--c-tile-glow`, `scale(1.08)`.
+  - As cores seguem o fundo: no `smoke` (padrão) prata e fumaça, no `classic` ciano e
+    magenta (`[data-theme]` em `tokens.css`).
 
 ## 5. Desempenho no Fire Stick
 

@@ -15,8 +15,9 @@ pela casca Kotlin em `android/`. Documentação em `docs/` (português).
 - Referência visual: `docs/reference/home-reference.webp`. Compare screenshots do
   preview (1600×900 ou 1920×1080) com ela.
 - Textos da interface e da documentação em português do Brasil.
-- Não adicione logos/imagens de marcas ao repositório: tiles usam o banner do app
-  instalado (nativo) ou o fallback de texto em `config.ts`.
+- Não adicione logos/imagens de marcas ao repositório: tiles usam o banner/ícone do app
+  instalado (nativo) ou o fallback de texto em `config.ts`. Para o preview, as artes
+  vêm de `web/.dev-art/` (gitignored), gerada por `scripts/pull-app-art.sh`.
 - Segredos só em `web/.env.local`.
 - Ao mudar a ponte nativa, atualize juntos: `LauncherBridge.kt`,
   `web/src/services/native.ts` e a tabela em `docs/05-integracoes.md`.

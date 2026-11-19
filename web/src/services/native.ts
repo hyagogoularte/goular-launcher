@@ -35,33 +35,51 @@ export const isNative = (): boolean => native() !== undefined;
 /** Domínio servido pelo WebViewAssetLoader (ver AppIconPathHandler.kt). */
 const ASSET_ORIGIN = 'http://appassets.androidplatform.net';
 
-export function bannerUrl(packageName: string): string {
-  return `${ASSET_ORIGIN}/appicons/banner/${encodeURIComponent(packageName)}`;
+/** `npm run dev` no navegador: artes copiadas do Fire TV (scripts/pull-app-art.sh). */
+const isDevPreview = (): boolean => !isNative() && import.meta.env?.DEV === true;
+
+/** Há de onde tirar a arte oficial dos apps: a casca nativa ou o preview de desenvolvimento. */
+export const hasAppArt = (): boolean => isNative() || isDevPreview();
+
+function artUrl(kind: 'banner' | 'icon', packageName: string): string {
+  const base = isDevPreview() ? '/dev-art' : `${ASSET_ORIGIN}/appicons`;
+  return `${base}/${kind}/${encodeURIComponent(packageName)}`;
 }
 
-export function iconUrl(packageName: string): string {
-  return `${ASSET_ORIGIN}/appicons/icon/${encodeURIComponent(packageName)}`;
-}
+export const bannerUrl = (packageName: string): string => artUrl('banner', packageName);
+export const iconUrl = (packageName: string): string => artUrl('icon', packageName);
 
+/**
+ * Espelha o Fire TV Stick 4K de casa (scripts/list-apps.sh, nov/2026), sem os apps
+ * que a ponte nativa descarta por exigirem permissão da Amazon (Kids, Perfis,
+ * Configurações da Amazon).
+ */
 const MOCK_APPS: InstalledApp[] = [
   'Netflix:com.netflix.ninja',
   'Disney+:com.disney.disneyplus',
-  'Prime Video:com.amazon.avod',
-  'Max:com.wbd.stream',
+  'Prime Video:com.amazon.firebat',
+  'HBO Max:com.hbo.hbonow',
   'Crunchyroll:com.crunchyroll.crunchyroid',
-  'YouTube:com.amazon.firetv.youtube',
-  'Spotify:com.spotify.tv.android',
-  'Globoplay:com.globo.globotv',
-  'Plex:com.plexapp.android',
-  'Kodi:org.xbmc.kodi',
-  'Twitch:tv.twitch.android.viewer',
   'Apple TV:com.apple.atve.amazon.appletv',
-  'Pluto TV:tv.pluto.android',
-  'Downloader:com.esaba.downloader',
-  'VLC:org.videolan.vlc',
+  'YouTube:com.amazon.firetv.youtube',
+  'Twitch:tv.twitch.android.viewer',
+  'F1 TV:com.formulaone.production',
+  'Notícias:com.amazon.hedwig',
+  'Amazon miniTV:com.amazon.minitv.android.app',
+  'Spotify:com.spotify.tv.android',
   'Amazon Music:com.amazon.bueller.music',
-  'Fotos:com.amazon.bueller.photos',
-  'Configurações:com.amazon.tv.settings.v2',
+  'Amazon Photos:com.amazon.bueller.photos',
+  'Amazon Luna:com.amazon.spiderpork',
+  'Amazon Game Center:com.amazon.gamehub',
+  'Appstore:com.amazon.venezia',
+  'Amazon Silk:com.amazon.cloud9',
+  'FireTV Troubleshooting:com.amazon.firetv.troubleshooting',
+  'Alexa Smart Home:com.amazon.smarthomemapviewapp',
+  'Early Access:com.amazon.tv.earlyaccess',
+  'Amazon Live Shopping:com.amazon.shoptv.firetv.client',
+  'Monitor do estado do sistema:com.amazon.ssm',
+  'Início:com.amazon.tv.launcher',
+  'Protetor de tela:com.amazon.ftv.screensaver',
 ].map((s) => {
   const [label, packageName] = s.split(':');
   return { label, packageName };
@@ -78,7 +96,7 @@ export function listInstalledApps(): InstalledApp[] {
       return [];
     }
   }
-  return [...apps].sort((a, b) => a.label.localeCompare(b.label, 'pt-BR'));
+  return [...apps].sort((a, b) => a.label.localeCompare(b.label, 'pt-BR', { sensitivity: 'base' }));
 }
 
 export function launchApp(app: InstalledApp): boolean {
@@ -88,7 +106,7 @@ export function launchApp(app: InstalledApp): boolean {
     return true;
   }
   const ok = bridge.launchApp(app.packageName);
-  if (!ok) notify(`${app.label} não está instalado`);
+  if (!ok) notify(`Não consegui abrir ${app.label}`);
   return ok;
 }
 

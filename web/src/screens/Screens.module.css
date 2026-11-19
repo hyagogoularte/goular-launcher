@@ -1,9 +1,17 @@
+/*
+ * Início: Casa + Entretenimento + Streaming precisam caber em 1080 sem rolar,
+ * então os blocos ficam mais juntos do que os grupos de "Todos os aplicativos".
+ */
 .section {
-  margin-top: 4.75rem;
+  margin-top: 2.5rem;
 }
 
 .section + .section {
-  margin-top: 5.75rem;
+  margin-top: 2.5rem;
+}
+
+.section > h2 {
+  margin-bottom: 1rem;
 }
 
 .climateRow {

@@ -1,6 +1,5 @@
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { House, LayoutGrid, type LucideIcon } from 'lucide-react';
-import { FocusGroup } from '../navigation/spatial';
+import { FocusGroup, useTvFocusable } from '../navigation/spatial';
 import styles from './NavTabs.module.css';
 
 export type TabId = 'home' | 'apps';
@@ -11,10 +10,10 @@ const TABS: { id: TabId; label: string; Icon: LucideIcon }[] = [
 ];
 
 function Tab({ id, label, Icon, active, onSelect }: (typeof TABS)[number] & { active: boolean; onSelect: (id: TabId) => void }) {
-  const { ref, focused } = useFocusable({ focusKey: `tab-${id}`, onEnterPress: () => onSelect(id) });
+  const { ref, focused, pointerProps } = useTvFocusable({ focusKey: `tab-${id}`, onSelect: () => onSelect(id) });
   const cls = [styles.tab, active && styles.active, focused && styles.focused].filter(Boolean).join(' ');
   return (
-    <div ref={ref} className={cls} role="tab" aria-selected={active}>
+    <div ref={ref} {...pointerProps} className={cls} role="tab" aria-selected={active}>
       <Icon size="2.25rem" strokeWidth={2} />
       <span>{label}</span>
     </div>

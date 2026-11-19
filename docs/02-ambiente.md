@@ -1,7 +1,8 @@
 # Ambiente de desenvolvimento (macOS)
 
-Estado verificado neste Mac: Node 25 e npm 11 ✅ · JDK 25 instalado (novo demais
-para o Gradle 8.11) · Android SDK, adb e Gradle ❌ ausentes.
+Estado deste Mac (19/11/2026): Node 25 e npm 11 ✅ · JDK 21 (Homebrew) ✅ · Android
+SDK 35 em `~/Library/Android/sdk` ✅ · Gradle wrapper ✅ · adb ✅. Instalado pelo caminho
+"sem Android Studio" abaixo; o Goular já foi compilado e instalado no Fire TV.
 
 ## 1. UI web (já funciona)
 
@@ -13,7 +14,29 @@ npm test           # testes unitários
 npm run build      # gera android/app/src/main/assets/www
 ```
 
-## 2. Android Studio + SDK
+## 2. Android SDK
+
+### Sem Android Studio (Homebrew, mais leve)
+
+```bash
+brew install openjdk@21 gradle
+```
+
+```bash
+brew install --cask android-commandlinetools
+```
+
+```bash
+yes | sdkmanager --sdk_root="$HOME/Library/Android/sdk" --licenses
+```
+
+```bash
+sdkmanager --sdk_root="$HOME/Library/Android/sdk" "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+```
+
+Os scripts acham sozinhos o JDK 21 do Homebrew e o SDK em `~/Library/Android/sdk`.
+
+### Com Android Studio
 
 1. Instale o Android Studio: `brew install --cask android-studio` (ou pelo site).
 2. Abra uma vez e conclua o assistente (instala SDK em `~/Library/Android/sdk`,

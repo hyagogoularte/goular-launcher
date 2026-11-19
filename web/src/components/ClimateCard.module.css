@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  height: 10.25rem;
+  height: 8.25rem;
   padding: 0 1.75rem 0 2rem;
   border-radius: var(--radius-card);
   border: 2px solid var(--c-border);
@@ -18,7 +18,8 @@
   border: 3px solid var(--c-accent);
   box-shadow:
     0 0 1.5rem var(--c-accent-glow),
-    inset 0 0 1rem rgba(46, 230, 242, 0.2);
+    0 0 3.5rem var(--c-accent-haze),
+    inset 0 0 1rem var(--c-accent-inset);
   opacity: 0;
   transition: opacity var(--dur-focus) var(--ease-focus);
 }
@@ -82,7 +83,7 @@
 }
 
 .temp {
-  font-size: var(--fs-temp-xl);
+  font-size: var(--fs-temp-card);
   font-weight: 700;
   line-height: 1.1;
 }
@@ -91,5 +92,12 @@
   align-self: flex-end;
   margin-bottom: 0.25rem;
   font-size: 1.75rem;
+  color: var(--c-text-dim);
+}
+
+/* sem dados: "–" e ícones apagados, no tom de desligado */
+.unavailable .temp,
+.unavailable .icon,
+.unavailable .power {
   color: var(--c-text-dim);
 }

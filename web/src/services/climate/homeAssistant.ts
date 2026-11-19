@@ -1,5 +1,5 @@
 import type { RoomConfig } from '../../config';
-import type { ClimateDevice, ClimateProvider } from './types';
+import { type ClimateDevice, type ClimateProvider, unavailableDevice } from './types';
 
 interface HaState {
   entity_id: string;
@@ -38,16 +38,18 @@ export class HomeAssistantClimateProvider implements ClimateProvider {
       this.rooms.map(async (room) => {
         try {
           const s = await this.request<HaState>(`/api/states/${room.entityId}`);
+          if (s.state === 'unavailable' || s.state === 'unknown') return unavailableDevice(room);
           return {
             id: room.entityId,
             name: room.name,
-            isOn: s.state !== 'off' && s.state !== 'unavailable',
+            available: true,
+            isOn: s.state !== 'off',
             currentTemp: s.attributes.current_temperature ?? null,
             targetTemp: s.attributes.temperature ?? null,
           };
         } catch (err) {
           console.warn('[goular] HA', room.entityId, err);
-          return { id: room.entityId, name: room.name, isOn: false, currentTemp: null, targetTemp: null };
+          return unavailableDevice(room);
         }
       }),
     );

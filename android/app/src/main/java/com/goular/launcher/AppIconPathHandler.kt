@@ -2,7 +2,9 @@ package com.goular.launcher
 
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.util.LruCache
 import android.webkit.WebResourceResponse
 import androidx.core.graphics.drawable.toBitmap
@@ -47,10 +49,25 @@ class AppIconPathHandler(private val pm: PackageManager) : WebViewAssetLoader.Pa
             null
         } ?: return null
 
-        val bitmap = if (kind == "icon") drawable.toBitmap(192, 192) else drawable.toBitmap()
-        return ByteArrayOutputStream().use { out ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-            out.toByteArray()
+        // Banner que é só cor/degradê (ex.: apps "stub" da Amazon) não identifica o app:
+        // sem ele o tile mostra o ícone e o nome.
+        if (kind == "banner" && (drawable is ColorDrawable || drawable is GradientDrawable)) return null
+
+        // Banner em XML (vetor) pode não ter tamanho próprio: usa o padrão 320x180.
+        val (w, h) = when {
+            kind == "icon" -> 192 to 192
+            drawable.intrinsicWidth > 0 && drawable.intrinsicHeight > 0 ->
+                drawable.intrinsicWidth to drawable.intrinsicHeight
+            else -> 320 to 180
+        }
+        return try {
+            val bitmap = drawable.toBitmap(w, h)
+            ByteArrayOutputStream().use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                out.toByteArray()
+            }
+        } catch (e: RuntimeException) {
+            null // arte que não desenha: o tile cai para o ícone/texto
         }
     }
 

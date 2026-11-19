@@ -4,8 +4,9 @@
 source "$(dirname "$0")/_common.sh"
 MAC_IP="${MAC_IP:-$(ipconfig getifaddr en0 || ipconfig getifaddr en1)}"
 URL="http://$MAC_IP:5173"
+connect_tv
+ensure_backup
 echo "▸ APK de debug apontando para $URL"
 (cd "$ROOT/android" && ./gradlew installDebug -PdevServer="$URL")
-connect_tv
 adb shell am start -n "$PKG/.MainActivity"
 echo "✓ Edite web/src e a TV recarrega. Depurar: chrome://inspect no Chrome do Mac"

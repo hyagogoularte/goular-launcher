@@ -10,14 +10,27 @@
   --c-bg-1: #08183a;
   --c-bg-2: #1b1660;
   --c-bg-3: #3c138a;
+  /* fundo "smoke": quase preto com um resto do azul/roxo do clássico */
+  --c-ink-0: #030407;
+  --c-ink-1: #05070c;
+  --c-ink-2: #0a0a12;
 
   --c-text: #f4f7ff;
   --c-text-muted: rgba(226, 232, 255, 0.74);
   --c-text-dim: rgba(226, 232, 255, 0.5);
 
+  /* Foco e destaque. Valores do fundo "classic"; o "smoke" troca logo abaixo. */
   --c-accent: #2ee6f2; /* ciano: foco de abas, cards e sublinhado */
   --c-accent-glow: rgba(46, 230, 242, 0.55);
+  --c-accent-inset: rgba(46, 230, 242, 0.22); /* brilho por dentro da borda do foco */
+  --c-accent-soft: rgba(46, 230, 242, 0.08); /* fundo da aba atual */
+  --c-accent-haze: transparent; /* halo largo em volta do foco */
+  --c-tile-ring: #ffffff; /* borda do foco dos apps */
+  --c-tile-ring-glow: rgba(255, 255, 255, 0.6);
   --c-tile-glow: rgba(217, 70, 239, 0.7); /* magenta: foco dos apps */
+  --c-tile-haze: transparent;
+  --c-control-border: rgba(196, 181, 253, 0.35); /* botão de configurações em repouso */
+  --c-control-glow: rgba(139, 92, 246, 0.35);
   --c-power-on: #4ade80;
 
   --c-surface: rgba(255, 255, 255, 0.055);
@@ -38,13 +51,34 @@
   --font: 'Inter Variable', 'Inter', system-ui, sans-serif;
   --fs-display: 2.75rem; /* "Boa noite, patrão." */
   --fs-clock: 4.25rem;
-  --fs-temp-xl: 3rem; /* temperaturas do topo e dos cards */
-  --fs-section: 2rem;
+  --fs-temp-xl: 3rem; /* temperaturas do clima no topo */
+  --fs-temp-card: 2.5rem; /* temperatura atual dos cômodos (cards de ar-condicionado) */
+  --fs-section: 1.75rem; /* títulos das seções e das categorias (texto e ícone) */
   --fs-body: 1.625rem;
   --fs-label: 1.5rem;
+  --fs-tile-name: 1.375rem; /* nome do app embaixo do ícone (apps sem banner) */
 
   /* Movimento: só transform e opacity são animados (barato na GPU do Fire Stick) */
   --dur-focus: 160ms;
   --ease-focus: cubic-bezier(0.2, 0.8, 0.2, 1);
   --scale-tile-focus: 1.08;
+}
+
+/*
+ * Fundo "smoke" (config.background, aplicado em App.tsx): o foco segue as linhas de
+ * fumaça do fundo. Borda prateada, brilho cinza-azulado e um halo largo e fraco, como
+ * as camadas de cada onda (Background.tsx), no lugar do ciano e do magenta.
+ */
+[data-theme='smoke'] {
+  --c-accent: #d7ddeb;
+  --c-accent-glow: rgba(154, 166, 196, 0.45);
+  --c-accent-inset: rgba(195, 201, 220, 0.16);
+  --c-accent-soft: rgba(215, 221, 235, 0.07);
+  --c-accent-haze: rgba(154, 166, 196, 0.16);
+  --c-tile-ring: #e6eaf4;
+  --c-tile-ring-glow: rgba(215, 221, 235, 0.45);
+  --c-tile-glow: rgba(154, 166, 196, 0.5);
+  --c-tile-haze: rgba(154, 166, 196, 0.18);
+  --c-control-border: rgba(215, 221, 235, 0.22);
+  --c-control-glow: rgba(154, 166, 196, 0.18);
 }

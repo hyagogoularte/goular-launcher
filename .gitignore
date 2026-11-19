@@ -16,3 +16,12 @@ web/.env.local
 web/.env.*.local
 
 .DS_Store
+
+# relatório de scripts/list-apps.sh (dados do seu aparelho)
+apps-firetv.md
+
+# backups do aparelho (scripts/backup-device.sh)
+backups/
+
+# artes oficiais dos apps copiadas do Fire TV (scripts/pull-app-art.sh): só para o preview
+web/.dev-art/
