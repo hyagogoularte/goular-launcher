@@ -52,7 +52,7 @@ Rode da raiz do projeto; os atalhos repassam para `web/` (ou rode direto dentro 
 | `scripts/dev-tv.sh` | TV carregando a UI do Vite (live reload) |
 | `scripts/list-apps.sh` | lista os apps do Fire Stick por grupo |
 | `scripts/pull-app-art.sh` | copia banners e ícones oficiais do Fire Stick para o preview (fora do git) |
-| `scripts/backup-device.sh` | zip do estado do Fire Stick em `backups/` |
+| `scripts/backup-device.sh` | zip do estado do Fire Stick em `backups/aaaammdd/hhmm/` (fora do git) |
 | `scripts/enable-screensaver.sh` | protetor de tela com o relógio do Goular |
 | `scripts/enable-home-watcher.sh` | Goular assume o botão Home |
 | `scripts/disable-home-watcher.sh` | desfaz o anterior |

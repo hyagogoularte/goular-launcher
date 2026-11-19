@@ -28,8 +28,10 @@ adb devices
 ## Backup do aparelho
 
 Antes da primeira mudança num Fire TV (`deploy.sh`, `dev-tv.sh`, `enable-` e
-`disable-home-watcher.sh`), os scripts guardam um zip do estado atual dele em `backups/`
-(fora do git). Para fazer um backup a qualquer momento:
+`disable-home-watcher.sh`), os scripts guardam um zip do estado atual dele em
+`backups/<aaaammdd>/<hhmm>/<modelo>-<serial>.zip` (ex.: `backups/20261119/1402/AFTKM-….zip`).
+Fica dentro do projeto, mas fora do git: com os APKs passa de 300 MB, acima do limite
+do GitHub, e traz dados do aparelho. Para fazer um backup a qualquer momento:
 
 ```bash
 FIRE_TV_IP=192.168.0.42 scripts/backup-device.sh --apks

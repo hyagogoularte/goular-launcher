@@ -2,7 +2,7 @@
 
 Levantamento para deixar o Fire TV leve e rápido ("versão clean") sem quebrar o
 Goular nem os apps de streaming. Feito sobre o backup de 19/11/2026
-(`backups/…-AFTKM-….zip`) do Fire TV Stick 4K (AFTKM, Fire OS 8.1.8.5, Android 11).
+(`backups/20261119/1301/AFTKM-….zip`) do Fire TV Stick 4K (AFTKM, Fire OS 8.1.8.5, Android 11).
 
 > **Nada aqui foi aplicado ainda.** Antes de qualquer mudança existe o backup
 > ([04-firestick.md](04-firestick.md#backup-do-aparelho)). Cada item diz como desfazer.

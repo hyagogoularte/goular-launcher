@@ -34,7 +34,7 @@ ensure_backup() {
   [[ "${SKIP_BACKUP:-}" == 1 ]] && return 0
   local serial
   serial="$(adb shell getprop ro.serialno | tr -d '\r')"
-  if ! compgen -G "$ROOT/backups/*-$serial.zip" >/dev/null; then
+  if ! compgen -G "$ROOT/backups/*/*/*-$serial.zip" >/dev/null; then
     echo "▸ Primeira vez neste aparelho: fazendo backup antes de mudar algo"
     "$ROOT/scripts/backup-device.sh"
   fi

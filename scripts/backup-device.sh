@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Fotografa o estado atual do Fire Stick num zip em backups/ (fora do git).
+# Fotografa o estado atual do Fire Stick num zip em backups/<aaaammdd>/<hhmm>/
+# (dentro do projeto, fora do git: com APKs passa de 300 MB).
 # Uso: FIRE_TV_IP=192.168.0.42 scripts/backup-device.sh [--apks]
 #   --apks  inclui os APKs dos apps instalados por você (centenas de MB)
 # Os scripts que mudam o aparelho chamam isto sozinhos na primeira vez (ensure_backup).
@@ -14,10 +15,13 @@ tv() { adb shell "$@" </dev/null | tr -d '\r'; }
 
 SERIAL="$(tv getprop ro.serialno)"
 MODEL="$(tv getprop ro.product.model)"
-NAME="$(date +%Y%m%d-%H%M%S)-$MODEL-$SERIAL"
-DIR="$ROOT/backups/$NAME"
+STAMP="$(date +%Y%m%d/%H%M)" # uma pasta por dia e, dentro, uma por horário
+NAME="$MODEL-$SERIAL"
+OUT="$ROOT/backups/$STAMP"
+[[ -e "$OUT/$NAME.zip" ]] && { echo "✗ Já existe backups/$STAMP/$NAME.zip; espere um minuto" >&2; exit 1; }
+DIR="$OUT/$NAME"
 mkdir -p "$DIR"/{aparelho,pacotes,configuracoes,estado}
-echo "▸ Backup de $MODEL em backups/$NAME.zip"
+echo "▸ Backup de $MODEL em backups/$STAMP/$NAME.zip"
 
 # Aparelho
 tv getprop > "$DIR/aparelho/getprop.txt"
@@ -87,5 +91,5 @@ Restaurar:
 - tirar o Goular: scripts/disable-home-watcher.sh e adb uninstall com.goular.launcher
 EOF
 
-(cd "$ROOT/backups" && zip -qr "$NAME.zip" "$NAME" && rm -rf "$NAME")
-echo "✓ backups/$NAME.zip ($(du -h "$ROOT/backups/$NAME.zip" | cut -f1))"
+(cd "$OUT" && zip -qr "$NAME.zip" "$NAME" && rm -rf "$NAME")
+echo "✓ backups/$STAMP/$NAME.zip ($(du -h "$OUT/$NAME.zip" | cut -f1))"
