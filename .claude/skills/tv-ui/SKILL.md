@@ -19,16 +19,18 @@ description: Regras para criar ou alterar a interface do Goular Launcher (React 
 
 ## Foco (D-pad + mouse)
 - Todo elemento interativo usa `useTvFocusable` (`web/src/navigation/spatial.tsx`)
-  com `focusKey` estável e descritivo (`fav-0`, `climate-<id>`, `tab-home`), ação em
+  com `focusKey` estável e descritivo (`fav-0-0`, `climate-<id>`, `tab-home`), ação em
   `onSelect` e `{...pointerProps}` espalhado no elemento. Assim OK do controle e
   clique do mouse fazem a mesma coisa, e passar o mouse por cima move o foco.
   Não use `useFocusable` direto nem `onClick` solto em itens.
 - Agrupe linhas/grades em `FocusGroup` (`web/src/navigation/spatial.tsx`).
 - Estado visual via classe `.focused` — nunca `:focus`/outline nativo.
 - Padrão de foco:
+  - Cores só por token (`--c-accent*`, `--c-tile-*`): elas mudam com o fundo
+    (`[data-theme='smoke']` em `tokens.css`). Nunca escreva ciano/magenta direto.
   - controles (abas, cards, botões): `::after` com borda `--c-accent` + brilho,
     `transform: scale(1.03–1.08)`;
-  - apps/conteúdo: borda branca + `--c-tile-glow`, `scale(var(--scale-tile-focus))`.
+  - apps/conteúdo: borda `--c-tile-ring` + `--c-tile-glow`, `scale(var(--scale-tile-focus))`.
 - Itens em áreas roláveis passam `scrollOnFocus: true` (rola só quando o foco vem do D-pad).
 - Modo ponteiro (`navigation/pointer.ts`): liga com movimento real do mouse, desliga
   na primeira tecla; o cursor só aparece nesse modo.
