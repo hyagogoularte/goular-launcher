@@ -4,6 +4,8 @@
 source "$(dirname "$0")/_common.sh"
 VARIANT="${1:-debug}"
 TASK="assemble$(tr '[:lower:]' '[:upper:]' <<< "${VARIANT:0:1}")${VARIANT:1}"
+connect_tv
+ensure_backup
 
 echo "▸ UI web"
 (cd "$ROOT/web" && npm run build)
