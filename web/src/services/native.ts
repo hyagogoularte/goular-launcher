@@ -49,7 +49,11 @@ function artUrl(kind: 'banner' | 'icon', packageName: string): string {
 export const bannerUrl = (packageName: string): string => artUrl('banner', packageName);
 export const iconUrl = (packageName: string): string => artUrl('icon', packageName);
 
-/** Espelha o Fire TV Stick 4K de casa (scripts/list-apps.sh, nov/2026). */
+/**
+ * Espelha o Fire TV Stick 4K de casa (scripts/list-apps.sh, nov/2026), sem os apps
+ * que a ponte nativa descarta por exigirem permissão da Amazon (Kids, Perfis,
+ * Configurações da Amazon).
+ */
 const MOCK_APPS: InstalledApp[] = [
   'Netflix:com.netflix.ninja',
   'Disney+:com.disney.disneyplus',
@@ -61,7 +65,6 @@ const MOCK_APPS: InstalledApp[] = [
   'Twitch:tv.twitch.android.viewer',
   'F1 TV:com.formulaone.production',
   'Notícias:com.amazon.hedwig',
-  'Amazon Kids:com.amazon.tahoe',
   'Amazon miniTV:com.amazon.minitv.android.app',
   'Spotify:com.spotify.tv.android',
   'Amazon Music:com.amazon.bueller.music',
@@ -70,9 +73,7 @@ const MOCK_APPS: InstalledApp[] = [
   'Amazon Game Center:com.amazon.gamehub',
   'Appstore:com.amazon.venezia',
   'Amazon Silk:com.amazon.cloud9',
-  'Interface do perfil do Fire TV:com.amazon.ftv.profilepicker',
   'FireTV Troubleshooting:com.amazon.firetv.troubleshooting',
-  'Configurações da Amazon:com.amazon.whasettings',
   'Alexa Smart Home:com.amazon.smarthomemapviewapp',
   'Early Access:com.amazon.tv.earlyaccess',
   'Amazon Live Shopping:com.amazon.shoptv.firetv.client',
@@ -105,7 +106,7 @@ export function launchApp(app: InstalledApp): boolean {
     return true;
   }
   const ok = bridge.launchApp(app.packageName);
-  if (!ok) notify(`${app.label} não está instalado`);
+  if (!ok) notify(`Não consegui abrir ${app.label}`);
   return ok;
 }
 

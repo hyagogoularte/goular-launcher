@@ -64,9 +64,9 @@ Implemente `ClimateProvider` (`web/src/services/climate/types.ts`) e escolha-o e
 
 | Método | Retorno |
 |---|---|
-| `getInstalledApps()` | JSON `[{ packageName, label, isTvApp, category }]` (`category`: video, audio, game, image… no Android 8+, senão `null`) |
-| `launchApp(pkg)` | `true` se abriu; `false` se não está instalado |
-| `openSystemSettings()` | abre as configurações do Fire TV |
+| `getInstalledApps()` | JSON `[{ packageName, label, isTvApp, category }]` (`category`: video, audio, game, image… no Android 8+, senão `null`). Deixa de fora apps que exigem permissão da Amazon para abrir |
+| `launchApp(pkg)` | `true` se abriu; `false` se não está instalado ou não pode ser aberto. Usa a tela própria do app quando a padrão passa pela tela da Amazon (`LAUNCH_OVERRIDES`) |
+| `openSystemSettings()` | abre o menu Configurações do Fire TV (`MainSettingsActivity`; `ACTION_SETTINGS` só de reserva) |
 | `getAppVersion()` | versão do APK |
 
 Imagens: `http://appassets.androidplatform.net/appicons/banner/<pkg>` e `/icon/<pkg>`

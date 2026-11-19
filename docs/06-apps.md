@@ -63,18 +63,18 @@ pacotes, 28 com tela. Os nomes são os que o próprio app mostra.
 | | Twitch | `tv.twitch.android.viewer` | instalado | Streaming |
 | | F1 TV | `com.formulaone.production` | instalado | Grade |
 | | Notícias | `com.amazon.hedwig` | fábrica | Grade |
-| | Amazon Kids | `com.amazon.tahoe` | fábrica | Grade |
+| | Amazon Kids | `com.amazon.tahoe` | fábrica | Fora: só a Amazon pode abrir (ver abaixo) |
 | | Amazon miniTV | `com.amazon.minitv.android.app` | fábrica | Oculto (`hiddenApps`): só funciona na Índia |
 | Música e áudio | Spotify | `com.spotify.tv.android` | instalado | Streaming |
 | | Amazon Music | `com.amazon.bueller.music` | fábrica | Grade |
 | Mídia e players | Amazon Photos | `com.amazon.bueller.photos` | fábrica | Grade |
 | Jogos | Amazon Luna | `com.amazon.spiderpork` | fábrica | Grade |
 | | Amazon Game Center | `com.amazon.gamehub` | fábrica | Grade |
-| Utilitários e sistema | Appstore | `com.amazon.venezia` | fábrica | Grade. É por ela que entram apps novos |
+| Utilitários e sistema | Appstore | `com.amazon.venezia` | fábrica | Grade. É por ela que entram apps novos; abre direto na loja (ver abaixo) |
 | | Amazon Silk | `com.amazon.cloud9` | fábrica | Grade |
-| | Interface do perfil do Fire TV | `com.amazon.ftv.profilepicker` | fábrica | Grade (trocar de perfil) |
+| | Interface do perfil do Fire TV | `com.amazon.ftv.profilepicker` | fábrica | Fora: só a Amazon pode abrir |
 | | FireTV Troubleshooting | `com.amazon.firetv.troubleshooting` | fábrica | Grade |
-| | Configurações da Amazon | `com.amazon.whasettings` | fábrica | Grade |
+| | Configurações da Amazon | `com.amazon.whasettings` | fábrica | Fora: só a Amazon pode abrir |
 | | Alexa Smart Home | `com.amazon.smarthomemapviewapp` | fábrica | Grade |
 | | Early Access | `com.amazon.tv.earlyaccess` | fábrica | Grade |
 | Outros | Amazon Live Shopping | `com.amazon.shoptv.firetv.client` | fábrica | Oculto (`hiddenApps`) |
@@ -82,8 +82,25 @@ pacotes, 28 com tela. Os nomes são os que o próprio app mostra.
 | | Protetor de tela | `com.amazon.ftv.screensaver` | fábrica | Oculto |
 | | Monitor do estado do sistema | `com.amazon.ssm` | fábrica | Oculto |
 
-As Configurações do Fire TV (`com.amazon.tv.settings.v2`) não têm tile: neste Fire OS
-elas não se declaram como app abrível. Abra pela engrenagem do cabeçalho.
+As Configurações do Fire TV não têm tile: abra pela engrenagem do cabeçalho, que leva
+direto ao menu Configurações (Rede, Meu Fire TV, Aplicativos…).
+
+### Apps que passam pela tela da Amazon
+
+O HomeWatcher devolve ao Goular toda vez que a tela inicial da Amazon aparece. Alguns
+atalhos de fábrica passam por ela e, abertos do jeito padrão, voltavam na hora para o
+Goular. A ponte nativa (`LauncherBridge.kt`) contorna assim (conferido no aparelho em
+19/11/2026):
+
+| Atalho | Entrada padrão | O que o Goular faz |
+|---|---|---|
+| Engrenagem (Configurações) | `ACTION_SETTINGS` → tela da Amazon | abre `com.amazon.tv.launcher/.ui.MainSettingsActivity` |
+| Appstore | `AppsGridLauncherActivity` → seção Apps da tela da Amazon | abre a loja (`.ade.ADEHomeActivity`), em `LAUNCH_OVERRIDES` |
+| Amazon Kids, Perfis, Configurações da Amazon | exigem permissão que só apps da Amazon têm (`com.amazon.profilepicker.permission.LAUNCH`, `com.amazon.whas.API_COMMUNICATION`) | não entram na grade; só abrem pela tela da Amazon |
+
+Outro atalho que volte sozinho para o Goular: rode `adb logcat -s GoularHome`, abra o
+app e veja que tela da Amazon apareceu; depois ache a tela própria dele e ponha em
+`LAUNCH_OVERRIDES`.
 
 ### Já conhecidos, se você instalar
 
