@@ -9,7 +9,9 @@ para aparecer instantaneamente ao ligar a TV. Os códigos WMO viram rótulo pt-B
 
 ## Ar-condicionado — Home Assistant
 
-Sem configuração, os cards usam dados simulados. Para controlar os aparelhos reais:
+Sem configuração (ou com um aparelho fora do ar no HA), o card mostra "–" no tom de
+desligado: nada de temperatura inventada. Para desenhar os cards com valores de
+exemplo, ponha `VITE_CLIMATE_MOCK=1` em `web/.env.local`. Para os aparelhos reais:
 
 ### 1. Entidades
 Cada ar precisa ser uma entidade `climate.*` no Home Assistant (integrações típicas:
@@ -67,21 +69,29 @@ Implemente `ClimateProvider` (`web/src/services/climate/types.ts`) e escolha-o e
 | `openSystemSettings()` | abre as configurações do Fire TV |
 | `getAppVersion()` | versão do APK |
 
-Imagens: `http://appassets.androidplatform.net/appicons/banner/<pkg>` e `/icon/<pkg>`.
+Imagens: `http://appassets.androidplatform.net/appicons/banner/<pkg>` e `/icon/<pkg>`
+(PNG; 404 quando o app não tem banner ou o banner é só cor/degradê, e o tile usa o
+ícone). No `npm run dev`, as mesmas URLs são `/dev-art/banner/<pkg>` e `/dev-art/icon/<pkg>`,
+servidas pelo Vite a partir de `web/.dev-art/` (`scripts/pull-app-art.sh`).
 
 Eventos disparados em `window`: `goular:back`, `goular:home`, `goular:resume`,
 `goular:packages-changed`.
 
 ## Grupos em "Todos os aplicativos"
 
-Ao abrir a aba, os blocos Casa e Favoritos dão lugar a uma seção por grupo
-(`web/src/services/appGroups.ts`). Cada app é classificado nesta ordem:
+Ao abrir a aba, os blocos do Início dão lugar a uma seção por grupo
+(`web/src/services/appGroups.ts`). Os apps que já estão no Início não se repetem. Apps ocultos (tela inicial da Amazon, telas de
+sistema e `config.hiddenApps`) ficam de fora. Os demais recebem o grupo assim:
 
 1. `config.appGroupOverrides` (`web/src/config.ts`) — sua correção manual, ex.:
    `{ 'org.xbmc.kodi': 'streaming' }`;
-2. lista de pacotes conhecidos;
-3. categoria declarada pelo app no Android 8+ (vem da ponte nativa);
-4. palavras-chave no pacote/nome;
-5. "Outros".
+2. lista de pacotes conhecidos (o catálogo);
+3. qualquer app fora do catálogo (todo app novo) vai para "Outros" até ser organizado.
 
-Grupos sem apps não aparecem. Voltar retorna ao Início.
+A categoria que o app declara no Android 8+ e as palavras-chave do pacote não mudam a
+tela: viram só a sugestão de grupo do relatório de `scripts/list-apps.sh`.
+
+Grupos aparecem de A a Z ("Outros" sempre por último) e, dentro de cada um, os apps
+de A a Z pelo nome do tile, sem diferenciar acento e maiúscula. Grupos sem apps não
+aparecem. Voltar retorna ao Início. Catálogo completo e como
+listar os apps do aparelho: [06-apps.md](06-apps.md).

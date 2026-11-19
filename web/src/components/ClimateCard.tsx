@@ -10,7 +10,10 @@ interface Props {
   onToggle?: (id: string) => void;
 }
 
-/** Card de um ar-condicionado. Com `onToggle`, OK no controle liga/desliga. */
+/**
+ * Card de um ar-condicionado. Com `onToggle`, OK no controle liga/desliga.
+ * Sem dados (`available: false`): temperatura "–" e tudo no tom de desligado.
+ */
 export function ClimateCard({ device, onToggle }: Props) {
   const { ref, focused, pointerProps } = useTvFocusable({
     focusKey: `climate-${device.id}`,
@@ -18,13 +21,11 @@ export function ClimateCard({ device, onToggle }: Props) {
     focusable: onToggle != null,
   });
 
+  const status = !device.available ? 'sem dados' : device.isOn ? 'ligado' : 'desligado';
+  const cls = [styles.card, focused && styles.focused, !device.available && styles.unavailable];
+
   return (
-    <div
-      ref={ref}
-      {...pointerProps}
-      className={`${styles.card} ${focused ? styles.focused : ''}`}
-      aria-label={`${device.name}, ${device.isOn ? 'ligado' : 'desligado'}`}
-    >
+    <div ref={ref} {...pointerProps} className={cls.filter(Boolean).join(' ')} aria-label={`${device.name}, ${status}`}>
       <div className={styles.icon}>
         <AirVent size="4rem" strokeWidth={1.4} />
       </div>
@@ -37,7 +38,7 @@ export function ClimateCard({ device, onToggle }: Props) {
           </span>
         </div>
         <div className={styles.row}>
-          <span className={styles.temp}>{formatTemp(device.currentTemp)}</span>
+          <span className={styles.temp}>{device.available ? formatTemp(device.currentTemp) : '–'}</span>
           {device.isOn && device.targetTemp != null && (
             <span className={styles.target}>({formatTemp(device.targetTemp)})</span>
           )}

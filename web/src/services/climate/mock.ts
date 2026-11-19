@@ -1,8 +1,11 @@
 import type { RoomConfig } from '../../config';
 import type { ClimateDevice, ClimateProvider } from './types';
 
-/** Valores da imagem de referência, para desenvolver sem Home Assistant. */
-const SEED: Record<string, Omit<ClimateDevice, 'id' | 'name'>> = {
+/**
+ * Valores da imagem de referência, para desenhar os cards sem Home Assistant.
+ * Só entra com VITE_CLIMATE_MOCK=1 em web/.env.local (ver ./index.ts).
+ */
+const SEED: Record<string, Omit<ClimateDevice, 'id' | 'name' | 'available'>> = {
   Sala: { isOn: false, currentTemp: 23, targetTemp: 22 },
   Escritório: { isOn: true, currentTemp: 20, targetTemp: 22 },
   'Quarto Antônio': { isOn: true, currentTemp: 23, targetTemp: 22 },
@@ -17,6 +20,7 @@ export class MockClimateProvider implements ClimateProvider {
     this.devices = rooms.map((r) => ({
       id: r.entityId,
       name: r.name,
+      available: true,
       ...(SEED[r.name] ?? { isOn: false, currentTemp: 24, targetTemp: 22 }),
     }));
   }
