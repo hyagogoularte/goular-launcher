@@ -19,10 +19,10 @@
   transition: transform var(--dur-focus) var(--ease-focus);
 }
 
-/* aba atual: borda ciano sem brilho */
+/* aba atual: borda de destaque sem brilho */
 .tab.active {
   border-color: var(--c-accent);
-  background: rgba(46, 230, 242, 0.08);
+  background: var(--c-accent-soft);
 }
 
 /* brilho do foco num pseudo-elemento: só a opacidade anima */
@@ -34,7 +34,8 @@
   border: 3px solid var(--c-accent);
   box-shadow:
     0 0 1.25rem var(--c-accent-glow),
-    inset 0 0 0.75rem rgba(46, 230, 242, 0.25);
+    0 0 3rem var(--c-accent-haze),
+    inset 0 0 0.75rem var(--c-accent-inset);
   opacity: 0;
   transition: opacity var(--dur-focus) var(--ease-focus);
 }

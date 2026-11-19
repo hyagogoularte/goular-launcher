@@ -109,8 +109,8 @@
   border-radius: 50%;
   color: var(--c-text);
   background: var(--c-surface-focus);
-  border: 2px solid rgba(196, 181, 253, 0.35);
-  box-shadow: 0 0 1.5rem rgba(139, 92, 246, 0.35);
+  border: 2px solid var(--c-control-border);
+  box-shadow: 0 0 1.5rem var(--c-control-glow);
   transition: transform var(--dur-focus) var(--ease-focus);
 }
 
@@ -120,7 +120,9 @@
   inset: -0.25rem;
   border-radius: 50%;
   border: 3px solid var(--c-accent);
-  box-shadow: 0 0 1.5rem var(--c-accent-glow);
+  box-shadow:
+    0 0 1.5rem var(--c-accent-glow),
+    0 0 3rem var(--c-accent-haze);
   opacity: 0;
   transition: opacity var(--dur-focus) var(--ease-focus);
 }
