@@ -5,9 +5,12 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PKG="com.goular.launcher"
 SERVICE="$PKG/$PKG.HomeWatcherService"
 
-# Gradle 8.11 não roda em JDK 25: usa o JDK 21 que vem com o Android Studio.
-if [[ -z "${JAVA_HOME:-}" && -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]]; then
-  export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+# Gradle 8.11 não roda em JDK 25: usa o JDK 21 do Android Studio ou o do Homebrew.
+if [[ -z "${JAVA_HOME:-}" ]]; then
+  for jdk in "/Applications/Android Studio.app/Contents/jbr/Contents/Home" \
+             "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"; do
+    [[ -d "$jdk" ]] && { export JAVA_HOME="$jdk"; break; }
+  done
 fi
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
